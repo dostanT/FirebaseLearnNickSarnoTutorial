@@ -13,12 +13,31 @@ final class SettingsViewModel: ObservableObject {
     func logOut() throws {
         try AuthenticationManager.shared.signOut()
     }
+    
+    func resetPassword() async throws {
+        let authUser = try AuthenticationManager.shared.getAuthenticationUser()
+        
+        guard let email = authUser.email else {
+            fatalError("User email not found")
+        }
+        
+        try await AuthenticationManager.shared.resetPassword(email: email)
+    }
+    
+    func updateEmail(email: String) async throws {
+        try await AuthenticationManager.shared.updateEmail(email: email)
+    }
+    
+    func updatePassword(password: String) async throws {
+        try await AuthenticationManager.shared.updatePassword(password: password)
+    }
 }
 
 struct SettingsView: View {
     
     @State private var viewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
+    @State private var password: String = ""
     
     var body: some View {
         List {
@@ -29,6 +48,34 @@ struct SettingsView: View {
                 } catch {
                     print(error)
                     
+                }
+            }
+            
+            Button("Reset Password") {
+                Task{
+                    do{
+                        try await viewModel.resetPassword()
+                        print("Password reset")
+                    } catch {
+                        print(error)
+                        
+                    }
+                }
+            }
+            
+            Section{
+                TextField("password", text: $password)
+                
+                Button("Update Password") {
+                    Task{
+                        do{
+                            try await viewModel.updatePassword(password: password)
+                            print("Password updated")
+                        } catch {
+                            print(error)
+                            
+                        }
+                    }
                 }
             }
         }
@@ -44,3 +91,5 @@ struct SettingsView_Previews: PreviewProvider {
         
     }
 }
+
+
