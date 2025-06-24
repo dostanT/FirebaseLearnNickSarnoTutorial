@@ -9,6 +9,13 @@ import SwiftUI
 @MainActor
 final class SettingsViewModel: ObservableObject {
     
+    @Published var authProviders: [AuthProviderOption] = []
+    
+    func loadAuthProviders()  {
+        if let provaiders = try? AuthenticationManager.shared.getProviders() {
+            authProviders = provaiders
+        }
+    }
     
     func logOut() throws {
         try AuthenticationManager.shared.signOut()
@@ -47,37 +54,39 @@ struct SettingsView: View {
                     showSignInView = true
                 } catch {
                     print(error)
-                    
                 }
             }
             
-            Button("Reset Password") {
-                Task{
-                    do{
-                        try await viewModel.resetPassword()
-                        print("Password reset")
-                    } catch {
-                        print(error)
-                        
-                    }
-                }
-            }
-            
-            Section{
-                TextField("password", text: $password)
-                
-                Button("Update Password") {
+            if viewModel.authProviders.contains(where: { $0 == .email }) {
+                Button("Reset Password") {
                     Task{
                         do{
-                            try await viewModel.updatePassword(password: password)
-                            print("Password updated")
+                            try await viewModel.resetPassword()
+                            print("Password reset")
                         } catch {
                             print(error)
-                            
+                        }
+                    }
+                }
+                
+                Section{
+                    TextField("password", text: $password)
+                    
+                    Button("Update Password") {
+                        Task{
+                            do{
+                                try await viewModel.updatePassword(password: password)
+                                print("Password updated")
+                            } catch {
+                                print(error)
+                            }
                         }
                     }
                 }
             }
+        }
+        .onAppear{
+            viewModel.loadAuthProviders()
         }
         .navigationTitle(Text("Settings"))
     }
