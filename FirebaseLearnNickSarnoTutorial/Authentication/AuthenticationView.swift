@@ -8,6 +8,7 @@ import SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift
 
+
 /**
  * AuthenticationViewModel - ViewModel для управления аутентификацией
  * 
@@ -15,8 +16,12 @@ import GoogleSignInSwift
  * Полезность: Разделяет бизнес-логику от UI, упрощает тестирование и поддерживает MVVM архитектуру
  * Работа: Координирует взаимодействие между UI и AuthenticationManager для Google Sign-In
  */
+
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
+    
+    let signInWithAppleHelper = SignInWithAppleHelper()
+    
     /**
      * signInWithGoogle() - Выполнение входа через Google
      * 
@@ -29,6 +34,35 @@ final class AuthenticationViewModel: ObservableObject {
         let tokens = try await helper.signInWithGoogle()
         try await AuthenticationManager.shared.signInWithGoogle(tokens: tokens )
     }
+    
+    func signInWithApple() async throws {
+        let helper = SignInWithAppleHelper()
+        let tokens = try await helper.startSignInWithAppleFlow()
+        try await AuthenticationManager.shared.signInWithApple(tokens: tokens)
+        
+//        signInWithAppleHelper.startSignInWithAppleFlow { result in
+//            switch result {
+//                case .success(let tokens):
+//                Task {
+//                    do {
+//                        try await AuthenticationManager.shared.signInWithApple(tokens: tokens)
+//                        self.didSignInWithApple = true
+//                    } catch {
+//                        
+//                    }
+//                    
+//                }
+//            case .failure(let error):
+//                print("Error signing in: \(error)")
+//            }
+//        }
+        
+        
+        /*
+         
+         */
+    }
+    
 }
 
 /**
@@ -67,6 +101,22 @@ struct AuthenticationView: View {
                     }
                 }
             }
+            
+            Button{
+                Task{
+                    do{
+                        try await viewModel.signInWithApple()
+                        showSignInView = false
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } label: {
+            SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
+                .allowsHitTesting(false)
+                .frame(height: 55)
+            }
+            
             Spacer()
         }
         .padding()
