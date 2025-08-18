@@ -8,10 +8,22 @@ import SwiftUI
 import GoogleSignIn
 import GoogleSignInSwift
 
-
-
+/**
+ * AuthenticationViewModel - ViewModel для управления аутентификацией
+ * 
+ * Цель: Обрабатывать логику аутентификации и управлять состоянием UI
+ * Полезность: Разделяет бизнес-логику от UI, упрощает тестирование и поддерживает MVVM архитектуру
+ * Работа: Координирует взаимодействие между UI и AuthenticationManager для Google Sign-In
+ */
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
+    /**
+     * signInWithGoogle() - Выполнение входа через Google
+     * 
+     * Цель: Обработать процесс аутентификации через Google
+     * Полезность: Предоставляет простой интерфейс для Google Sign-In в UI
+     * Работа: Получает токены через SignInGoogleHelper и аутентифицирует пользователя через AuthenticationManager
+     */
     func signInWithGoogle() async throws {
         let helper = SignInGoogleHelper.shared
         let tokens = try await helper.signInWithGoogle()
@@ -19,6 +31,13 @@ final class AuthenticationViewModel: ObservableObject {
     }
 }
 
+/**
+ * AuthenticationView - Представление для выбора способа аутентификации
+ * 
+ * Цель: Предоставить пользователю интерфейс для входа в приложение
+ * Полезность: Центральный экран аутентификации с поддержкой email и Google входа
+ * Работа: Отображает кнопки для различных способов входа и управляет навигацией к соответствующим экранам
+ */
 struct AuthenticationView: View {
     
     @StateObject private var viewModel = AuthenticationViewModel()
@@ -55,6 +74,13 @@ struct AuthenticationView: View {
     }
 }
 
+/**
+ * AuthenticationView_Previews - Предварительный просмотр для AuthenticationView
+ * 
+ * Цель: Обеспечить предварительный просмотр в Xcode для разработки UI
+ * Полезность: Позволяет видеть изменения в UI без запуска приложения
+ * Работа: Создает тестовую среду с NavigationStack для корректного отображения
+ */
 struct AuthenticationView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{

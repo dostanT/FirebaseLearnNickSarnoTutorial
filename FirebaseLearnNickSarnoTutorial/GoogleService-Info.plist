@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>458348694719-1b36su0kmenrh7opc00acb4gpq9ufrtg.apps.googleusercontent.com</string>
+	<string>458348694719-ap10ghlusrtfdihgluv11a7dgtlcbea9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.458348694719-1b36su0kmenrh7opc00acb4gpq9ufrtg</string>
+	<string>com.googleusercontent.apps.458348694719-ap10ghlusrtfdihgluv11a7dgtlcbea9</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDeR_i6FcS-d6AIiCxh935OhGP3d3aeqA8</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +13,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.dostanturlybek.FirebaseLearnNickSarnoTutorial</string>
+	<string>com.dostanturlybek.FirebaseLearnNickSarnoTutorialPRO</string>
 	<key>PROJECT_ID</key>
 	<string>myfirstfirebaseproject-b0239</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:458348694719:ios:245ac58e519e67f14b4a0a</string>
+	<string>1:458348694719:ios:b5bcc53606867ebe4b4a0a</string>
 </dict>
 </plist>
