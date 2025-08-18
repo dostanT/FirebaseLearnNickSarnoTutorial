@@ -15,6 +15,8 @@ import SwiftUI
 struct SignInWithAppleResult {
     let token: String
     let nonce: String
+    let name: String?
+    let email: String?
 }
 
 
@@ -121,8 +123,11 @@ extension SignInWithAppleHelper: ASAuthorizationControllerDelegate {
             completionHandler?(.failure(URLError(.badServerResponse)))
             return
         }
+        //Тут вроде нужно держать данные пользователя в анонимности(что-то, где-то помню в что Apple указывала что требует что пользователи могли держать полную анонимность, и мы никак не должны нарушать их)
+        let name = appleIDCredential.fullName?.givenName
+        let email = appleIDCredential.email
         
-        let tokens = SignInWithAppleResult(token: idTokenString, nonce: nonce)
+        let tokens = SignInWithAppleResult(token: idTokenString, nonce: nonce, name: name, email: email)
         completionHandler?(.success(tokens))
     }
 
