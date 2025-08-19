@@ -17,6 +17,7 @@ import SwiftUI
 final class SettingsViewModel: ObservableObject {
     
     @Published var authProviders: [AuthProviderOption] = []
+    @Published var authUser: AuthDataResultModel? = nil
     
     /**
      * loadAuthProviders() - Загрузка провайдеров аутентификации пользователя
@@ -30,7 +31,12 @@ final class SettingsViewModel: ObservableObject {
             authProviders = provaiders
         }
     }
-    
+    func loadAuthUser() {
+        do {
+            self.authUser = try? AuthenticationManager.shared.getAuthenticationUser()
+            print(authUser?.isAnonymous.description ?? "None")
+        }
+    }
     /**
      * logOut() - Выход пользователя из системы
      * 
@@ -79,6 +85,24 @@ final class SettingsViewModel: ObservableObject {
      */
     func updatePassword(password: String) async throws {
         try await AuthenticationManager.shared.updatePassword(password: password)
+    }
+    
+    func linkGoogleAccount() async throws {
+        let helper = SignInGoogleHelper.shared
+        let tokens = try await helper.signInWithGoogle()
+        self.authUser = try await AuthenticationManager.shared.linkGoogle(tokens: tokens)
+    }
+    
+    func linkAppleAccount() async throws {
+        let helper = SignInWithAppleHelper()
+        let tokens = try await helper.startSignInWithAppleFlow()
+        self.authUser = try await AuthenticationManager.shared.linkApple(tokens: tokens)
+    }
+    
+    func linkEmailAccount() async throws {
+        let email = "anotherEmail@gmail.com"
+        let password = "Hello123!"
+        self.authUser = try await AuthenticationManager.shared.linkEmail(email: email, password: password)
     }
 }
 
@@ -133,28 +157,58 @@ struct SettingsView: View {
                     }
                 }
             }
+            
+            if viewModel.authUser?.isAnonymous == nil {
+                anonymousSection
+            }
+            
         }
         .onAppear{
             viewModel.loadAuthProviders()
+            viewModel.loadAuthUser()
         }
         .navigationTitle(Text("Settings"))
     }
 }
 
-/**
- * SettingsView_Previews - Предварительный просмотр для SettingsView
- * 
- * Цель: Обеспечить предварительный просмотр в Xcode для разработки UI
- * Полезность: Позволяет видеть изменения в UI без запуска приложения
- * Работа: Создает тестовую среду с NavigationStack для корректного отображения
- */
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationStack{
-            SettingsView(showSignInView: .constant(false))
+extension SettingsView {
+    private var anonymousSection: some View {
+        Section {
+            Button("Link Google Account") {
+                Task {
+                    do {
+                        try await viewModel.linkGoogleAccount()
+                        print("GOOGLE LINKED!")
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            
+            Button("Link Apple Account") {
+                Task {
+                    do {
+                        try await viewModel.linkAppleAccount()
+                        print("APPLE LINKED!")
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            
+            Button("Link Email Account") {
+                Task {
+                    do {
+                        try await viewModel.linkEmailAccount()
+                        print("EMAIL LINKED!")
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        } header: {
+            Text("Create account")
         }
-        
     }
 }
-
 

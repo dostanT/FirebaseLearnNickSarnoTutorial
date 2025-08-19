@@ -20,8 +20,6 @@ import GoogleSignInSwift
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
     
-    let signInWithAppleHelper = SignInWithAppleHelper()
-    
     /**
      * signInWithGoogle() - Выполнение входа через Google
      * 
@@ -63,6 +61,11 @@ final class AuthenticationViewModel: ObservableObject {
          */
     }
     
+    func signInAnonymous() async throws {
+        
+        try await AuthenticationManager.shared.signInAnonymous()
+    }
+    
 }
 
 /**
@@ -79,6 +82,27 @@ struct AuthenticationView: View {
     
     var body: some View{
         VStack{
+            
+            Button {
+                Task{
+                    do{
+                        try await viewModel.signInAnonymous()
+                        showSignInView = false
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } label: {
+                Text("Sign in anonymously")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.orange)
+                    .cornerRadius(25)
+            }
+            
+            
             NavigationLink {
                 SignInEmailView(showSignInView: $showSignInView)
             } label: {
