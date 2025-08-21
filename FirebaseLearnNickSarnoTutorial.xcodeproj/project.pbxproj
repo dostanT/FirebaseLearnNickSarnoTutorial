@@ -10,7 +10,6 @@
 		B987DBFB2E080D670064509D /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = B987DBFA2E080D670064509D /* FirebaseAnalytics */; };
 		B988CD472E52E8D100A3055E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B988CD462E52E8D100A3055E /* GoogleService-Info.plist */; };
 		B99826BD2E092E8B002A64AA /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B99826BC2E092E8B002A64AA /* FirebaseAuth */; };
-		B99826C32E092F6A002A64AA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99826BF2E092F6A002A64AA /* ContentView.swift */; };
 		B99826C42E092F6A002A64AA /* FirebaseLearnNickSarnoTutorialApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99826C02E092F6A002A64AA /* FirebaseLearnNickSarnoTutorialApp.swift */; };
 		B99826C52E092F6A002A64AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B99826BE2E092F6A002A64AA /* Assets.xcassets */; };
 		B99826C92E092F85002A64AA /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99826C82E092F83002A64AA /* AuthenticationView.swift */; };
@@ -30,7 +29,6 @@
 		B988CD462E52E8D100A3055E /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B988CD482E52EEB300A3055E /* FirebaseLearnNickSarnoTutorial.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FirebaseLearnNickSarnoTutorial.entitlements; sourceTree = "<group>"; };
 		B99826BE2E092F6A002A64AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B99826BF2E092F6A002A64AA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B99826C02E092F6A002A64AA /* FirebaseLearnNickSarnoTutorialApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseLearnNickSarnoTutorialApp.swift; sourceTree = "<group>"; };
 		B99826C82E092F83002A64AA /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		B99826CA2E093009002A64AA /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 				B9B396312E0AB5A400083777 /* Info.plist */,
 				B99826C72E092F6D002A64AA /* Authentication */,
 				B99826BE2E092F6A002A64AA /* Assets.xcassets */,
-				B99826BF2E092F6A002A64AA /* ContentView.swift */,
 				B99826C02E092F6A002A64AA /* FirebaseLearnNickSarnoTutorialApp.swift */,
 				B988CD462E52E8D100A3055E /* GoogleService-Info.plist */,
 			);
@@ -193,7 +190,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B99826D12E09470F002A64AA /* SettingsView.swift in Sources */,
-				B99826C32E092F6A002A64AA /* ContentView.swift in Sources */,
 				B99826C42E092F6A002A64AA /* FirebaseLearnNickSarnoTutorialApp.swift in Sources */,
 				B99826CF2E0939A3002A64AA /* RootView.swift in Sources */,
 				B9B396362E0B171E00083777 /* SignInGoogleHelper.swift in Sources */,

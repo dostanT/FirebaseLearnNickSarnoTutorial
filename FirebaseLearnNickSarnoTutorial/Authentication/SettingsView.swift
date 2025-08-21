@@ -104,6 +104,10 @@ final class SettingsViewModel: ObservableObject {
         let password = "Hello123!"
         self.authUser = try await AuthenticationManager.shared.linkEmail(email: email, password: password)
     }
+    
+    func deleteUser() async throws {
+        try await AuthenticationManager.shared.deleteUser()
+    }
 }
 
 /**
@@ -129,6 +133,18 @@ struct SettingsView: View {
                     print(error)
                 }
             }
+            Button(role: .destructive) {
+                Task{
+                    do {
+                        try await viewModel.deleteUser()
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            } label: {
+                Text("Delete User")
+            }
+
             
             if viewModel.authProviders.contains(where: { $0 == .email }) {
                 Button("Reset Password") {
