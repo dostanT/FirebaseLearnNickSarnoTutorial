@@ -9,44 +9,25 @@ import SwiftUI
 @MainActor
 final class ProfileViewModel: ObservableObject {
     
-    @Published var user: DBUser?
+    @Published var user: DBUser? = nil
     
-    init(){
-        user = loadCurrentUser()
-    }
-    
-    func createUser() {
+    func loadCurrentUser() async throws {
         do {
             let authDataResult = try AuthenticationManager.shared.getAuthenticationUser()
-            Task{
-                try await UserManager.shared.createNewUser(auth: authDataResult)
-            }
+            print(authDataResult)
+            let result = try await UserManager.shared.getUser(userID: authDataResult.uid)
+            print(result)
+            self.user = result
         } catch {
-            
+            print("NAH")
         }
-    }
-    
-    func loadCurrentUser() -> DBUser? {
-        do {
-            let authDataResult = try AuthenticationManager.shared.getAuthenticationUser()
-            createUser()
-            Task {
-                
-                let result = try await UserManager.shared.getUser(userID: authDataResult.uid)
-                return result
-            }
-            
-        } catch {
-            print(error)
-        }
-        return nil
     }
     
 }
 
 struct ProfileView: View {
     
-    @State private var profileVM: ProfileViewModel = .init()
+    @StateObject private var profileVM: ProfileViewModel = .init()
     @Binding var showSignInView: Bool
     
     var body: some View {
@@ -61,6 +42,9 @@ struct ProfileView: View {
             
         }
         .navigationTitle("Profile")
+        .task {
+            try? await profileVM.loadCurrentUser()
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 NavigationLink {
@@ -74,7 +58,9 @@ struct ProfileView: View {
             
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    profileVM.user = profileVM.loadCurrentUser()
+                    Task {
+                        try? await profileVM.loadCurrentUser()
+                    }
                 } label: {
                     Image(systemName: "arrow.2.squarepath")
                         .font(.headline)
