@@ -32,7 +32,8 @@ final class SignInEmailViewModel: ObservableObject {
         }
         
         let returnedUserData = try await AuthenticationManager.shared.createUser(email: email, password: password)
-        try await UserManager.shared.createNewUser(auth: returnedUserData)
+        let user = DBUser(authData: returnedUserData)
+        try await UserManager.shared.createNewUser(user: user)
     }
     
     /**

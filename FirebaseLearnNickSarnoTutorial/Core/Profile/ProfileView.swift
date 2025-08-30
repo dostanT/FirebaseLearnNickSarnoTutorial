@@ -20,6 +20,17 @@ final class ProfileViewModel: ObservableObject {
             self.user = result
         } catch {
             print("NAH")
+            print(error)
+            print(error.localizedDescription)
+        }
+    }
+    
+    func tooglePremiumStatus() {
+        guard let user else {return}
+        
+        Task{
+            try await UserManager.shared.updateUserPremiumStatus(user: user, isPremium: user.isPremium == false)
+            self.user = try await UserManager.shared.getUser(userID: user.userId)
         }
     }
     
@@ -33,10 +44,16 @@ struct ProfileView: View {
     var body: some View {
         List {
             if let user = profileVM.user {
-                Text(user.userID)
+                Text(user.userId)
                 
                 if let isAnonymous = user.isAnonymous {
                     Text("Is anonymous: \(isAnonymous.description.capitalized)")
+                }
+                
+                Button {
+                    profileVM.tooglePremiumStatus()
+                } label: {
+                    Text("User is premium: \((user.isPremium ?? false).description.capitalized)")
                 }
             }
             
@@ -53,7 +70,7 @@ struct ProfileView: View {
                     Image(systemName: "gear")
                         .font(.headline)
                 }
-
+                
             }
             
             ToolbarItem(placement: .topBarLeading) {
@@ -65,7 +82,7 @@ struct ProfileView: View {
                     Image(systemName: "arrow.2.squarepath")
                         .font(.headline)
                 }
-
+                
             }
         }
         
